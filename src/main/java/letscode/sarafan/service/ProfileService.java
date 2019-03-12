@@ -1,11 +1,13 @@
 package letscode.sarafan.service;
 
 import letscode.sarafan.domain.User;
+import letscode.sarafan.domain.UserSubscription;
 import letscode.sarafan.repo.UserDetailsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProfileService {
@@ -17,12 +19,18 @@ public class ProfileService {
     }
 
     public User changeSubscription(User channel, User subscriber) {
-        Set<User> subscribers = channel.getSubscribers();
+        List<UserSubscription> subcriptions = channel.getSubscribers()
+                .stream()
+                .filter(subscription ->
+                        subscription.getSubscriber().equals(subscriber)
+                )
+                .collect(Collectors.toList());
 
-        if (subscribers.contains(subscriber)) {
-            subscribers.remove(subscriber);
+        if (subcriptions.isEmpty()) {
+            UserSubscription subscription = new UserSubscription(channel, subscriber);
+            channel.getSubscribers().add(subscription);
         } else {
-            subscribers.add(subscriber);
+            channel.getSubscribers().removeAll(subcriptions);
         }
 
         return userDetailsRepo.save(channel);
