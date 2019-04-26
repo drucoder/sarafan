@@ -35,5 +35,6 @@ dependencies {
     compile('org.postgresql:postgresql')
     compile 'org.jsoup:jsoup:1.11.3'
     compile('org.projectlombok:lombok')
+	compile 'io.sentry:sentry-spring:1.7.16'
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
