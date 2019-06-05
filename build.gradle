@@ -36,6 +36,9 @@ repositories {
 	mavenCentral()
 }
 
+node {
+	download = true
+}
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
